@@ -9,30 +9,21 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
         }
 
         header {
-            background-color: #ff0000;
+            background-color: #f1f1f1;
             padding: 1em;
             text-align: center;
-            color: white;
         }
 
         #searchInput {
             width: 300px;
             padding: 0.5em;
-            border-radius: 5px;
-            border: 1px solid #ddd;
         }
 
         #searchButton {
             padding: 0.5em 1em;
-            border-radius: 5px;
-            border: none;
-            background-color: #333;
-            color: white;
-            cursor: pointer;
         }
 
         #recommendedVideos, #searchResults, #videoPlayer {
@@ -50,10 +41,6 @@
             margin: 1em;
             max-width: 300px;
             cursor: pointer;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-            background-color: white;
         }
 
         .video-item img {
@@ -62,10 +49,13 @@
         }
 
         #videoPlayer {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 60vh;
+            height: 60%;
             background: #000;
-            margin-bottom: 2em;
+            z-index: 1000;
         }
 
         #videoPlayer iframe {
@@ -101,20 +91,11 @@
             margin: 1em auto;
             text-align: center;
         }
-
-        @media only screen and (max-width: 600px) {
-            #searchInput {
-                width: 80%;
-            }
-            .video-item {
-                max-width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1 id="pageTitle">YouTube Clone</h1>
+        <h1 id="pageTitle">Homepage</h1>
         <input type="text" id="searchInput" placeholder="Search for videos...">
         <button id="searchButton">Search</button>
     </header>
@@ -133,10 +114,9 @@
         </section>
     </main>
     <script>
-        const API_KEY = 'YOUR_YOUTUBE_API_KEY';
+        const API_KEY = 'AIzaSyBSPaUjHXt4fC8Q_z0R7Xutjmv3ACIskeo';
         const API_URL = 'https://www.googleapis.com/youtube/v3/search';
         const VIDEO_URL = 'https://www.youtube.com/watch?v=';
-        let currentVideoId = '';
 
         // Search videos and display results on search page
         function searchVideos(query) {
@@ -192,7 +172,6 @@
 
         // Play video on video page
         function playVideo(videoId) {
-            currentVideoId = videoId;
             const playerContainer = document.getElementById('videoPlayer');
             playerContainer.innerHTML = `
                 <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allowfullscreen></iframe>
@@ -220,14 +199,15 @@
         function downloadVideo() {
             const format = document.getElementById('format').value;
             const quality = document.getElementById('quality').value;
-            // Video download using a third-party tool like yt-dlp or similar; placeholder URL shown
-            const downloadUrl = `${VIDEO_URL}${currentVideoId}&format=${format}&quality=${quality}`;
+            // Example URL for downloading; you need to handle actual download process
+            const downloadUrl = `${VIDEO_URL}${videoId}&format=${format}&quality=${quality}`;
             alert(`Download URL: ${downloadUrl}\nIn format: ${format} and quality: ${quality}`);
         }
 
         // Play video as background audio
         function playInBackground() {
-            const audioUrl = `https://www.youtube.com/watch?v=${currentVideoId}`;
+            const videoId = new URLSearchParams(window.location.search).get('v');
+            const audioUrl = `https://www.youtube.com/watch?v=${videoId}`;
             const audio = new Audio(audioUrl);
             audio.play();
             alert(`Playing ${audioUrl} in background`);
@@ -257,16 +237,16 @@
             document.getElementById('videoPlayer').style.display = 'none';
         }
 
-        // Event listener for search button
-        document.getElementById('searchButton').addEventListener('click', function() {
+        // Search button functionality
+        document.getElementById('searchButton').addEventListener('click', () => {
             const query = document.getElementById('searchInput').value;
-            searchVideos(query);
+            if (query) {
+                searchVideos(query);
+            }
         });
 
-        // Load recommended videos when the page loads
-        window.onload = function() {
-            loadRecommendedVideos();
-        };
+        // Initialize home page
+        window.onload = loadRecommendedVideos;
     </script>
 </body>
 </html>
