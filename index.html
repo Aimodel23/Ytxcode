@@ -186,8 +186,8 @@
                         <option value="mp4">MP4</option>
                         <option value="mp3">MP3</option>
                     </select>
-                    <button onclick="downloadVideo()">Download</button>
-                    <button onclick="playInBackground()">Play in Background</button>
+                    <button onclick="downloadVideo('${videoId}')">Download</button>
+                    <button onclick="playInBackground('${videoId}')">Play in Background</button>
                 </div>
             `;
             document.getElementById('recommendedVideos').style.display = 'none';
@@ -196,17 +196,17 @@
         }
 
         // Download video based on selected format and quality
-        function downloadVideo() {
+        function downloadVideo(videoId) {
             const format = document.getElementById('format').value;
             const quality = document.getElementById('quality').value;
-            // Example URL for downloading; you need to handle actual download process
-            const downloadUrl = `${VIDEO_URL}${videoId}&format=${format}&quality=${quality}`;
-            alert(`Download URL: ${downloadUrl}\nIn format: ${format} and quality: ${quality}`);
+            // Placeholder URL for downloading
+            const downloadUrl = `https://example.com/download?videoId=${videoId}&format=${format}&quality=${quality}`;
+            // Simulating download (replace this with actual implementation)
+            alert(`Downloading video with ID: ${videoId}\nFormat: ${format}\nQuality: ${quality}`);
         }
 
         // Play video as background audio
-        function playInBackground() {
-            const videoId = new URLSearchParams(window.location.search).get('v');
+        function playInBackground(videoId) {
             const audioUrl = `https://www.youtube.com/watch?v=${videoId}`;
             const audio = new Audio(audioUrl);
             audio.play();
